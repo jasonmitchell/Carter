@@ -61,10 +61,15 @@ namespace Carter
         /// <param name="handler">The handler that is invoked when the route is hit</param>
         protected void Get(string path, RequestDelegate handler)
         {
+            this.Route(path)
+                .Get(handler);
+        }
+        
+        protected RequestRoute Route(string path)
+        {
             path = this.RemoveStartingSlash(path);
             path = this.PrependBasePath(path);
-            this.Routes.Add((HttpMethods.Get, path), handler);
-            this.Routes.Add((HttpMethods.Head, path), handler);
+            return new RequestRoute(path, this.Routes);
         }
 
         /// <summary>
